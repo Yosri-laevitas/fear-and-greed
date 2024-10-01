@@ -19,6 +19,7 @@ def z_score_normalize(df):
     normalized_df = pd.DataFrame(normalized_array, columns=df.columns)
     return normalized_df
 
+
 def min_max_scale(df):
     """
     Normalize data using Min-Max normalization.
