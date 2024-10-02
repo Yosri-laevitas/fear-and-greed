@@ -4,5 +4,10 @@ __pycache__/
 *.pyc
 *.pyo
 venv/
-*.pyc
 **/__pycache__/
+meta.csv
+output.csv
+test.py
+response_1727865420181.json
+.gitignore
+test.ipynb

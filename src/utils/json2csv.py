@@ -2,50 +2,54 @@ import json
 import csv
 import os
 
-def json_to_csv(json_file_path, csv_file_path):
-    """
-    Convert a JSON file to a CSV file.
+import json
+import pandas as pd
 
+def json_to_csv(json_path: str, items_csv_path: str, meta_csv_path: str) -> None:
+    """
+    Convert a JSON file to CSV for 'items' and 'meta' data.
+    
     Parameters
     ----------
-        json_file_path : str
-            The path to the input JSON file.
-        csv_file_path : str 
-            The path where the output CSV file will be saved.
+    json_path : str
+        The path to the JSON file.
+    items_csv_path : str
+        The path to save the 'items' data CSV file.
+    meta_csv_path : str 
+        The path to save the 'meta' data CSV file.
+
     Returns
     -------
-        None
+    None: 
+        Saves the 'items' and 'meta' data to CSV files.
+
     Raises
     ------
-        FileNotFoundError
-            If the JSON file does not exist.
-        ValueError
-            If the JSON data is not a list of dictionaries or a single dictionary.
-
+    FileNotFoundError : 
+        If the JSON file does not exist.
+    json.JSONDecodeError : 
+        If the JSON file contains an invalid JSON encoding.
     """
-    # Check if the JSON file exists
-    if not os.path.exists(json_file_path):
-        raise FileNotFoundError(f"The file {json_file_path} does not exist.")
+    try:
+        # Load the JSON data
+        with open(json_path, 'r') as file:
+            data = json.load(file)
+        
+        # Parse 'items' into a DataFrame
+        items_df = pd.DataFrame(data.get('items', []))
+        
+        # Parse 'meta' into a DataFrame (single row)
+        meta_df = pd.DataFrame([data.get('meta', {})])
+        
+        # Save both DataFrames to CSV
+        items_df.to_csv(items_csv_path, index=False)
+        meta_df.to_csv(meta_csv_path, index=False)
 
-    # Read the JSON data from the file
-    with open(json_file_path, 'r', encoding='utf-8') as json_file:
-        data = json.load(json_file)
+        print(f"Items and meta data have been successfully saved to {items_csv_path} and {meta_csv_path} respectively.")
+    except FileNotFoundError:
+        print(f"Error: The file {json_path} does not exist.")
+    except json.JSONDecodeError:
+        print("Error: Failed to parse JSON file. Please check the file's format.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {str(e)}")
 
-    # Check if data is a list of dictionaries
-    if isinstance(data, dict):
-        # If the JSON data is a dictionary, convert it to a list of dictionaries
-        data = [data]
-
-    if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
-        raise ValueError("JSON data must be a list of dictionaries or a single dictionary.")
-
-    # Extract the header from the keys of the first dictionary
-    header = data[0].keys()
-
-    # Write to the CSV file
-    with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=header)
-        writer.writeheader()
-        writer.writerows(data)
-
-    print(f"Successfully converted {json_file_path} to {csv_file_path}.")
