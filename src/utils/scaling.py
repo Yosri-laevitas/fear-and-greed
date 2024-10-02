@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-def z_score_normalize(df):
+def z_score_normalize(df: pd.DataFrame) -> pd.DataFrame:
     """
     Normalize data using Z-score normalization.
 
@@ -20,7 +20,7 @@ def z_score_normalize(df):
     return normalized_df
 
 
-def min_max_scale(df):
+def min_max_scale(df: pd.DataFrame) -> pd.DataFrame:
     """
     Normalize data using Min-Max normalization.
 
