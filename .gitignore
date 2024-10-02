@@ -1,17 +1,3 @@
-.pytest_cache/
-.vscode/
-__pycache__/
-*.pyc
-*.pyo
-venv/
-**/__pycache__/
-meta.csv
-output.csv
-test.py
-response_1727865420181.json
-.gitignore
-test.ipynb
-
 # Ignore raw data
 data/raw/
 
@@ -28,3 +14,6 @@ __pycache__/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+
+# Ignore venv
+venv/
