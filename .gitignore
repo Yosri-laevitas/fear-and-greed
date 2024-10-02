@@ -11,3 +11,20 @@ test.py
 response_1727865420181.json
 .gitignore
 test.ipynb
+
+# Ignore raw data
+data/raw/
+
+# Ignore logs
+logs/
+
+# Ignore sensitive information
+config/secrets.yml
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
