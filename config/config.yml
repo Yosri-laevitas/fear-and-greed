@@ -1,0 +1,22 @@
+# Configuration file for the Fear & Greed Index project
+
+# General settings
+project:
+  name: "Fear & Greed Index"
+  version: "1.0.0"
+  description: "A project to create a BTC and ETH Fear & Greed index."
+
+# Data directories
+data:
+  raw: "./data/raw/"
+  processed: "./data/processed/"
+
+# Logging configuration
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_file: "./logs/app.log"
+
+# Notifications
+notification:
+  enable: true
+  email: "yosri@laevitas.ch"  # Email for notifications if needed
