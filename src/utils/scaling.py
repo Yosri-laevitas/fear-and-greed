@@ -22,7 +22,6 @@ def z_score_normalize(df: pd.DataFrame) -> pd.DataFrame:
     
     return df
 
-
 def min_max_scale(df: pd.DataFrame) -> pd.DataFrame:
     """
     Normalize numerical columns of pd.DataFrame object using Min-Max normalization.
