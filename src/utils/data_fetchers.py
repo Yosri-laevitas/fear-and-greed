@@ -1,10 +1,13 @@
 import requests
 import yaml
 from typing import Literal
+from numpy import ceil
 from pprint import pprint
+
+import pandas as pd
 def get_historical_perps_page(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144, page: int = 1) -> dict:
     """
-    Fetches historical data for perpetual swaps from the Laevitas API.
+    Fetches historical data for perpetual swaps from the Laevitas API per page.
 
     Parameters
     ----------
@@ -28,7 +31,7 @@ def get_historical_perps_page(market: str, symbol: str, token: str, start: str, 
     Returns
     -------
     dict 
-        A json containing the historical data for the specified perpetual swap.
+        A json containing a page of the historical data for the specified perpetual swap.
     """
 
     params = {
@@ -49,18 +52,36 @@ def get_historical_perps_page(market: str, symbol: str, token: str, start: str, 
 
     return response.json()
 
+def get_df_items(items: list) -> pd.DataFrame:
+    """
+    Parses the 'items' field of the JSON data into a pandas DataFrame.
 
-if __name__ == "__main__":
+    Parameters
+    ----------
+    json_data : dict
+        The JSON data containing the historical data.
 
-    with open('config/secrets.yml', 'r') as file:
-        secrets = yaml.safe_load(file)
+    Returns
+    -------
+    pd.DataFrame
+        A DataFrame containing the 'items' field of the JSON data.
+    """ 
+    df = pd.DataFrame(items['items'])
+    df['date'] = pd.to_datetime(df['date'], unit='ms')
+    return df
 
-    market = 'DERIBIT'
-    symbol = 'BTC-PERPETUAL'
-    token = secrets.get('api', {}).get('crypto_data', {}).get('key')
-    start = '2023-09-30'
-    end = '2023-10-30'
-    granularity = '1d'
+def get_historical_perps(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144, page: int = 1):
+    
+    historical_data = get_historical_perps_page(market, symbol, token, start, end, granularity, limit)
+    
+    items = historical_data['items']
 
-    historical_data = get_historical_perps_page(market, symbol, token, start, end, granularity)
-    pprint(historical_data)
+    total_items = historical_data['meta']['total']
+    items_per_page = historical_data['meta']['items']
+    pages = int(ceil(total_items / items_per_page))
+
+    for page in range(2, pages + 1):
+        historical_data = get_historical_perps_page(market, symbol, token, start, end, granularity, limit, page)
+        items += historical_data['items']
+    
+    return items
