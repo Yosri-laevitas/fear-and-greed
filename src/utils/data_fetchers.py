@@ -4,6 +4,8 @@ from numpy import ceil
 import pandas as pd
 import numpy as np
 
+base_url = 'https://api.laevitas.ch'
+
 def get_df_items(items: list) -> pd.DataFrame:
     """
     Parses the 'items' field of the JSON data into a pandas DataFrame.
@@ -79,7 +81,7 @@ def get_historical_perps_page(market: str,
         'apiKey': token,
     }
 
-    url = f'https://api.laevitas.ch/historical/derivs/perpetuals/{market}/{symbol}'
+    url = base_url + f'/historical/derivs/perpetuals/{market}/{symbol}'
 
     response = requests.get(url=url, params=params, headers=headers)
 
@@ -184,3 +186,4 @@ def get_historical_futures_page(market: str, symbol: str, token: str, start: str
 # ----------------------------------------------------------------
 # Options Data Fetchers
 # ----------------------------------------------------------------
+
