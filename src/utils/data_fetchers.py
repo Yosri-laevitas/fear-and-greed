@@ -66,11 +66,11 @@ def get_df_items(items: list) -> pd.DataFrame:
     pd.DataFrame
         A DataFrame containing the 'items' field of the JSON data.
     """ 
-    df = pd.DataFrame(items['items'])
+    df = pd.DataFrame(items)
     df['date'] = pd.to_datetime(df['date'], unit='ms')
     return df
 
-def get_historical_perps(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144, page: int = 1):
+def get_historical_perps(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144):
     
     historical_data = get_historical_perps_page(market, symbol, token, start, end, granularity, limit)
     
