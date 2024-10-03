@@ -2,7 +2,7 @@ import requests
 import yaml
 from typing import Literal
 from pprint import pprint
-def get_historical_perps(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144, page: int = 1) -> dict:
+def get_historical_perps_page(market: str, symbol: str, token: str, start: str, end: str, granularity: Literal['5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d'], limit: int = 144, page: int = 1) -> dict:
     """
     Fetches historical data for perpetual swaps from the Laevitas API.
 
@@ -62,5 +62,5 @@ if __name__ == "__main__":
     end = '2023-10-30'
     granularity = '1d'
 
-    historical_data = get_historical_perps(market, symbol, token, start, end, granularity)
+    historical_data = get_historical_perps_page(market, symbol, token, start, end, granularity)
     pprint(historical_data)
