@@ -8,7 +8,8 @@ from .data_fetchers import (
     get_historical_futures_page,
     get_historical_futures,
     get_historical_options_page,
-    get_historical_options
+    get_historical_options,
+    get_historical_all_perps
 )
 
 __all__ = [
@@ -19,5 +20,6 @@ __all__ = [
            'get_historical_futures',
            'get_df_items',
            'get_instruments_data', 
-           'get_historical_options'
+           'get_historical_options',
+           'get_historical_all_perps'
           ]
