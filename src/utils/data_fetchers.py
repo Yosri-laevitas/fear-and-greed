@@ -1,3 +1,4 @@
+from time import sleep
 import requests
 from typing import Literal
 import yaml
@@ -32,7 +33,6 @@ def get_df_items(items: list) -> pd.DataFrame:
 
     df = pd.DataFrame(items)
     df['date'] = pd.to_datetime(df['date'], unit='ms')
-    #pd.set_option("future.no_silent_downcasting", True)
     df = df.replace({None: np.nan})
 
     return df
@@ -130,18 +130,28 @@ def get_historical_perps_page(market: str,
     dict 
         A json containing a page of the historical data for the specified perpetual.
     """
+    sleep(2)
 
     params = {
         'start': start,
         'end': end,
         'granularity': granularity,
         'limit': limit,
-        'page': page
+        'page': page,
+        'legacy':'true'
     }
 
     url = base_url + f'/historical/derivs/perpetuals/{market}/{symbol}'
 
     response = requests.get(url=url, params=params, headers=headers)
+
+    if response.status_code != 200:
+        print(f'Error ({market}, {symbol}): {response.text}')
+        sleep(5)
+        response = requests.get(url=url, params=params, headers=headers)
+        if response.status_code!= 200:
+            print(f'Error second try ({market}, {symbol}): {response.text}')
+            return
 
     return response.json()
 
@@ -179,14 +189,19 @@ def get_historical_perps(market: str,
     """
 
     historical_data = get_historical_perps_page(market, symbol, start, end, granularity, limit)
-    items = historical_data['items']
-    pages = historical_data['meta']['total_pages']
+    if historical_data:
+        items = historical_data['items']
+        total_items = historical_data['meta']['total']
+        pages = int(np.ceil(total_items / limit))
 
-    for page in range(2, pages + 1):
-        historical_data = get_historical_perps_page(market, symbol, start, end, granularity, limit, page)
-        items += historical_data['items']
-    
-    return get_df_items(items)
+        for page in range(2, pages + 1):
+            historical_data = get_historical_perps_page(market, symbol, start, end, granularity, limit, page)
+            items += historical_data['items']
+        
+        if items:
+            return get_df_items(items)
+    print('No items to return00')
+    return None
 
 # ----------------------------------------------------------------
 # Futures Data Fetchers
@@ -220,7 +235,8 @@ def get_historical_futures_page(market: str, symbol: str, start: str, end: str, 
     dict
         A json containing a page of the historical data for the specified futures contract.
     """
-    
+    sleep(2)
+
     params = {
         'start': start,
         'end': end,
@@ -317,6 +333,7 @@ def get_historical_options_page(market: str,
     dict
         A json containing a page of the historical data for the specified options contract.
     """
+    sleep(2)
 
     params = {
         'start': start,

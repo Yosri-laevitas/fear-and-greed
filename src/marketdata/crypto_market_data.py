@@ -30,6 +30,12 @@ class CryptoMarketData():
         Getter and setter for the granularity.
     """
 
+    """fetcher_dict = {
+        'perpetual':get_historical_all_perps,
+        'option': get_historical_all_options,
+        'future': get_historical_all_futures
+    }"""
+
     def __init__(self, currency: Literal["BTC", "ETH"], type: Literal['perpetual', 'option', 'future'], start: str, end: str, granularity: Literal['5m', '15m', '30m','1h', '2h', '4h', '6h', '12h', '1d']) -> None:
         """
         Initializes a new instance of CryptoMarketData.
