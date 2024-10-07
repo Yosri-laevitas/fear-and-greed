@@ -267,7 +267,7 @@ def get_historical_all_perps(currency: Literal['BTC', 'ETH'],
     pd.DataFrame
         A DataFrame containing historical perpetual data for the specified currency across all markets.
     """
-    perps_logger.info("")
+    perps_logger.info("*********************************************************************************************")
     perps_logger.info(f"Fetching historical data for all available perpetuals of {currency} from {start} to {end}")
 
     try:
