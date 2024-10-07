@@ -299,7 +299,7 @@ def get_historical_all_perps(currency: Literal['BTC', 'ETH'],
                         
             combined_df = pd.concat(L_dfs, axis=0, ignore_index=True)
             perps_logger.info("Successfully concatenated all fetched data")
-            return combined_df[['date', 'market', 'symbol', 'price', 'basis', 'funding', 'volume', 'open_interest', 'long_short_ratio']]
+            return combined_df[['date', 'market', 'symbol', 'price', 'basis', 'funding', 'volume', 'open_interest', 'long_short_ratio']].drop_duplicates(subset=['date', 'market', 'symbol'])
         else:
             perps_logger.warning(f"No data found for any perpetual in {currency}")
             return pd.DataFrame()
