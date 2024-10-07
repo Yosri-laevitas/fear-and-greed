@@ -1,5 +1,6 @@
 from .formatting import json_to_csv
 from .scaling import z_score_normalize, min_max_scale
+from .compare_date import geq
 from .data_fetchers import (
     get_historical_perps_page,
     get_historical_perps, 
@@ -13,7 +14,8 @@ from .data_fetchers import (
 )
 
 __all__ = [
-           'json_to_csv', 
+           'json_to_csv',
+           'leq',
            'min_max_scale', 
            'z_score_normalize', 
            'get_historical_perps',
