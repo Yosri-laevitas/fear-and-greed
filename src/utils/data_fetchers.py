@@ -241,7 +241,11 @@ def get_historical_perps(market: str,
     perps_logger.error(f"No data returned for {market}'s {symbol}")
     return pd.DataFrame()
 
-def get_historical_all_perps(currency: Literal['BTC', 'ETH'], start: str, end: str, granularity: str, limit: int = 144) -> pd.DataFrame:
+def get_historical_all_perps(currency: Literal['BTC', 'ETH'], 
+                             start: str, 
+                             end: str, 
+                             granularity: str, 
+                             limit: int = 144) -> pd.DataFrame:
     """
     Fetches historical data for all perpetuals for a specified currency.
 
@@ -263,6 +267,7 @@ def get_historical_all_perps(currency: Literal['BTC', 'ETH'], start: str, end: s
     pd.DataFrame
         A DataFrame containing historical perpetual data for the specified currency across all markets.
     """
+    perps_logger.info("")
     perps_logger.info(f"Fetching historical data for all available perpetuals of {currency} from {start} to {end}")
 
     try:
@@ -294,7 +299,7 @@ def get_historical_all_perps(currency: Literal['BTC', 'ETH'], start: str, end: s
                         
             combined_df = pd.concat(L_dfs, axis=0, ignore_index=True)
             perps_logger.info("Successfully concatenated all fetched data")
-            return combined_df
+            return combined_df[['date', 'market', 'symbol', 'price', 'basis', 'funding', 'volume', 'open_interest', 'long_short_ratio']]
         else:
             perps_logger.warning(f"No data found for any perpetual in {currency}")
             return pd.DataFrame()
