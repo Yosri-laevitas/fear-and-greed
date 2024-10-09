@@ -4,7 +4,7 @@ from .compare_date import geq
 from .futures_preprocessing import process_futures
 from .plotting import plot_series_analysis, corr_heatmap, pairplot
 from .stats_tests import adf_test
-from .data_fetchers import (
+"""from .data_fetchers import (
     # get_historical_perps_page,
     get_historical_perps,
     get_df_items,
@@ -14,7 +14,7 @@ from .data_fetchers import (
     # get_historical_options_page,
     get_historical_options,
     get_historical_all_perps,
-)
+)"""
 
 __all__ = [
     "json_to_csv",

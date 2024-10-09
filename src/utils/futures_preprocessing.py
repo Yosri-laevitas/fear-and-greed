@@ -44,7 +44,9 @@ def calculate_annualized_basis(df: pd.DataFrame) -> pd.DataFrame:
 def filter_and_aggregate(df: pd.DataFrame) -> pd.DataFrame:
     """Filter and group the df DataFrame."""
     df = df[~(df["days_to_expiry"] == 0)]
-    df = df.groupby("date").mean(numeric_only=True).round(2)
+    df1 = df.groupby("date").mean(numeric_only=True)[["price", "annualized_basis"]]
+    df2 = df.groupby("date").sum(numeric_only=True)[["open_interest", "volume"]]
+    df = pd.concat([df1, df2], axis=1)
     return df
 
 
