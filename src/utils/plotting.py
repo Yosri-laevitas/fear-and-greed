@@ -12,9 +12,14 @@ def plot_series_analysis(series: pd.Series) -> None:
     3. Boxplot
     4. QQ plot
 
-    Parameters:
+    Parameters
+    ----------
     series : pd.Series
         The input time series data to be analyzed.
+
+    Returns
+    -------
+    None
     """
 
     # Set up the 2x2 subplot matrix
@@ -51,8 +56,54 @@ def plot_series_analysis(series: pd.Series) -> None:
     plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.show()
 
+
 def corr_heatmap(data, title):
-    corr = data.corr(numeric_only=True)
+    """
+    Generates a correlation heatmap for a given pd.DataFrame object.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The input data for which the correlation heatmap is generated.
+    title : str
+        The title of the plot.
+
+    Returns
+    -------
+    None
+    """
+    corr = data.corr(method="kendall", numeric_only=True)
     sns.heatmap(corr, annot=True, square=True, cmap="coolwarm")
     plt.title(title)
+    plt.show()
+
+
+def pairplot(data, title):
+    """
+    Generates a pairplot for a given pd.DataFrame object with enhanced visuals.
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        The input data for which the pairplot is generated.
+    title : str
+        The title of the plot.
+
+    Returns
+    -------
+    None
+    """
+    # Create a pairplot with a custom color palette and enhanced aesthetics
+    g = sns.pairplot(
+        data,
+        diag_kind="kde",
+        diag_kws={"alpha": 0.6},
+        plot_kws={"alpha": 0.7, "s": 40, "edgecolor": "k"},
+        # palette="viridis"
+    )
+
+    # Add a title to the entire plot
+    g.fig.suptitle(title, fontsize=16, y=1.02)
+
+    # Show the plot
     plt.show()
