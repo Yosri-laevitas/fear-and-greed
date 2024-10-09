@@ -1,2 +1,2 @@
 #from .perpetuals_data import PerpetualsData
-from .futures_data import FuturesData
+from .futures_data import FuturesData  # noqa: F401

@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
 import pandas as pd
+import plotly.graph_objs as go
+from plotly.subplots import make_subplots
+from statsmodels.tsa.seasonal import seasonal_decompose
 
 
 def plot_series_analysis(series: pd.Series) -> None:
@@ -107,3 +110,71 @@ def pairplot(data, title):
 
     # Show the plot
     plt.show()
+
+
+def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = False):
+    result = seasonal_decompose(
+        data,
+        model="additive",
+        period=period,
+    )
+
+    fig = make_subplots(rows=1, cols=1)
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
+            y=result.seasonal + result.trend,
+            mode="lines",
+            name="Trend + Seasonal",
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
+            y=data,
+            mode="lines",
+            name="Original Data",
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
+            y=result.resid,
+            mode="lines",
+            name="Residuals",
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
+            y=result.trend,
+            mode="lines",
+            name="Trend",
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
+            y=result.seasonal,
+            mode="lines",
+            name="Seasonal",
+        )
+    )
+
+    fig.update_layout(
+        title=f"Signal Decomposition of: {data.name}",
+        xaxis_title="Date",
+        yaxis_title="Annualized Basis",
+        legend_title="Components",
+        showlegend=True,
+    )
+
+    fig.show()
+
+    if return_results:
+        return result
