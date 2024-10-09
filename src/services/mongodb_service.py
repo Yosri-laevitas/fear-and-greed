@@ -35,7 +35,7 @@ def get_data(
 
     # Create the base query for currency and hour
     query = {
-        "currency": {"$regex": coin},
+        "currency": {"$regex": coin, "$options": "i"},
         "$expr": {"$eq": [{"$hour": "$date"}, 0]},
     }
 

@@ -53,7 +53,7 @@ class FuturesData(CryptoMarketData):
     def start(self, start: str) -> None:
         if geq(start, self.__start):
             self.__historical_data = self.__historical_data[
-                self.__historical_data["date"] >= start
+                self.__historical_data.index >= start
             ]
         else:
             df = process_futures(
@@ -72,7 +72,7 @@ class FuturesData(CryptoMarketData):
     def end(self, end: str) -> None:
         if geq(self.__end, end):
             self.__historical_data = self.__historical_data[
-                self.__historical_data["date"] <= end
+                self.__historical_data.index <= end
             ]
         else:
             df = process_futures(
