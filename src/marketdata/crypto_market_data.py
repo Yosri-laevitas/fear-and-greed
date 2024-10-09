@@ -6,6 +6,14 @@ class CryptoMarketData:
     def __init__():
         pass
 
+    def iqr_cleaning(self):
+        # Implement IQR cleaning logic here
+        pass
+
+    def interpolate_missing_values(self):
+        # Implement interpolation logic here
+        pass
+    
     def save(self, file_name: str) -> None:
         if not file_name.endswith(".pkl"):
             file_name += ".pkl"

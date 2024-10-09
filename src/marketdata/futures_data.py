@@ -22,6 +22,7 @@ class FuturesData(CryptoMarketData):
         self.__historical_data = process_futures(
             get_data(self.__currency, self.type(), self.__start, self.__end)
         )
+        super().__init__()
 
     @classmethod
     def type(cls):
