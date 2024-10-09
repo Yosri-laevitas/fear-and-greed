@@ -50,7 +50,7 @@ def filter_and_aggregate(df: pd.DataFrame) -> pd.DataFrame:
 
 def process_futures(futures: pd.DataFrame) -> pd.DataFrame:
     """Process the futures DataFrame."""
-    df = futures.copy()
+    df = pd.DataFrame(futures).copy()
     df = add_expiry_column(df)
     df = calculate_days_to_expiry(df)
     df = calculate_annualized_basis(df)
