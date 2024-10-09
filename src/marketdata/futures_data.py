@@ -13,12 +13,11 @@ class FuturesData(CryptoMarketData):
         currency: Literal["BTC", "ETH"],
         start: str,
         end: str,
-        # granularity: Literal["5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d"],
     ) -> None:
         self.__currency = currency
         self.__start = start
         self.__end = end
-        # self.__granularity = granularity
+
         self.__historical_data = process_futures(
             get_data(self.__currency, self.type(), self.__start, self.__end)
         )
@@ -83,14 +82,3 @@ class FuturesData(CryptoMarketData):
                 [self.__historical_data, df], axis=0, ignore_index=True
             )
         self.__end = end
-
-    """@property
-    def granularity(self) -> str:
-        return self.__granularity
-
-    @granularity.setter
-    def granularity(self, granularity: str) -> None:
-        self.__granularity = granularity
-        self.__historical_data = process_futures(get_data(
-            self.__currency, self.__start, self.__end, self.__granularity
-        )"""

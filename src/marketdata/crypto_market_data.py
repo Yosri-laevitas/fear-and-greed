@@ -3,7 +3,7 @@ import pickle
 
 class CryptoMarketData:
 
-    def __init__():
+    def __init__(self):
         pass
 
     def iqr_cleaning(self):
