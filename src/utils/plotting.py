@@ -113,6 +113,19 @@ def pairplot(data, title):
 
 
 def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = False):
+    """
+    Performs a seasonal decomposition on a given pd.Series object.
+
+    Parameters
+    ----------
+    data : pd.Series
+    period : int, optional
+    return_results : bool, optional
+
+    Returns
+    -------
+    None or pd.DataFrame
+    """
     result = seasonal_decompose(
         data,
         model="additive",
@@ -121,14 +134,14 @@ def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = Fals
 
     fig = make_subplots(rows=1, cols=1)
 
-    fig.add_trace(
+    """fig.add_trace(
         go.Scatter(
             x=data.index,
             y=result.seasonal + result.trend,
             mode="lines",
             name="Trend + Seasonal",
         )
-    )
+    )"""
 
     fig.add_trace(
         go.Scatter(
@@ -136,15 +149,6 @@ def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = Fals
             y=data,
             mode="lines",
             name="Original Data",
-        )
-    )
-
-    fig.add_trace(
-        go.Scatter(
-            x=data.index,
-            y=result.resid,
-            mode="lines",
-            name="Residuals",
         )
     )
 
@@ -160,6 +164,15 @@ def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = Fals
     fig.add_trace(
         go.Scatter(
             x=data.index,
+            y=result.resid,
+            mode="lines",
+            name="Residuals",
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=data.index,
             y=result.seasonal,
             mode="lines",
             name="Seasonal",
@@ -169,7 +182,7 @@ def signal_decomp(data: pd.Series, period: int = 10, return_results: bool = Fals
     fig.update_layout(
         title=f"Signal Decomposition of: {data.name}",
         xaxis_title="Date",
-        yaxis_title="Annualized Basis",
+        yaxis_title=f"{data.name}",
         legend_title="Components",
         showlegend=True,
     )
